@@ -1,11 +1,15 @@
+from datetime import datetime, timedelta
+
+
 class Urls:
 
     BASE_URL = "https://qa-scooter.praktikum-services.ru/"  # главная страница Яндекс Самокат
-    ORDER_URL = BASE_URL + "/order" # страница заказа самоката
     DZEN_HOST = "dzen.ru"  # хост страницы Дзен
 
 
 class TestData:
+
+    _today = datetime.now() # текущая дата
 
     USER_1 = {
             "name": "Василий",
@@ -13,7 +17,7 @@ class TestData:
             "address": "ул. Ленина, 10",
             "metro": "Пушкинская",
             "phone": "+79001234567",
-            "date": "05.09.2026",
+            "date": (_today + timedelta(days=1)).strftime("%d.%m.%Y"),  # Завтра
             "rental_period": "сутки",
             "color": "black",
             "comment": "Оставьте у двери"
@@ -25,7 +29,7 @@ class TestData:
             "address": "пр. Мира, 5",
             "metro": "Маяковская",
             "phone": "+79007654321",
-            "date": "10.09.2026",
+            "date": (_today + timedelta(days=2)).strftime("%d.%m.%Y"), # Послезавтра
             "rental_period": "шестеро суток",
             "color": "grey",
             "comment": "Звонок не работает, стучите 3 раза"

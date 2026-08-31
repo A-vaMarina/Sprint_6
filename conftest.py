@@ -6,6 +6,6 @@ from data import Urls
 def driver():
     driver = webdriver.Firefox()
     driver.maximize_window()
-    driver.get(Urls.base_url)
+    driver.get(Urls.BASE_URL)
     yield driver
     driver.quit()
