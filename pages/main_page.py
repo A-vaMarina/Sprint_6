@@ -1,39 +1,59 @@
-from selenium.webdriver.common.by import By
+import allure
+from selenium.common.exceptions import TimeoutException
+
 from pages.base_page import BasePage
+from locators.main_page_locators import MainPageLocators as Locators
+
 
 class MainPage(BasePage):
-    # Локаторы
-    COOKIE_BUTTON = (By.ID, "rcc-confirm-button")  # Кнопка "да все привыкли"
-    ORDER_BUTTON_TOP = (By.XPATH, "//button[@class='Button_Button__ra12g' and text()='Заказать']")
-    ORDER_BUTTON_BOTTOM = (By.XPATH, "//button[@class='Button_Button__ra12g Button_UltraBig__UU3Lp' and text()='Заказать']")
-    FAQ_QUESTIONS = (By.XPATH, "//div[@class='accordion__item']")
-    FAQ_QUESTION_BUTTONS = (By.XPATH, "//div[@id='accordion__heading-{index}']")
-    FAQ_ANSWER_PANELS = (By.XPATH, "//div[@id='accordion__panel-{index}']/p")
 
-    def __init__(self, driver):
-        super().__init__(driver)
+    @allure.step("Принять cookies, если баннер отображается")
+    def accept_cookies_if_present(self):
+        try:
+            self.wait_and_click(Locators.COOKIE_BUTTON, timeout=3)
+        except TimeoutException:
+            # баннер cookies уже был закрыт ранее
+            pass
 
-    def accept_cookies(self):
-        self.click(self.COOKIE_BUTTON)
+    @allure.step("Нажать кнопку 'Заказать' в шапке страницы")
+    def click_order_button_top(self):
+        self.wait_and_click(Locators.ORDER_BUTTON_TOP)
 
-    def click_order_top(self):
-        self.click(self.ORDER_BUTTON_TOP)
+    @allure.step("Нажать кнопку 'Заказать' в нижней части страницы")
+    def click_order_button_bottom(self):
+        self.scroll_to_element(Locators.ORDER_BUTTON_BOTTOM)
+        self.wait_and_click(Locators.ORDER_BUTTON_BOTTOM)
 
-    def click_order_bottom(self):
-        self.click(self.ORDER_BUTTON_BOTTOM)
-
+    @allure.step("Раскрыть вопрос FAQ и получить текст ответа")
     def get_faq_answer_text(self, index):
-        """Получить текст ответа на вопрос по индексу (0-based)"""
-        question_button = (By.ID, f"accordion__heading-{index}")
-        answer_panel = (By.ID, f"accordion__panel-{index}")
+        question_locator = Locators.faq_question_button(index)
+        answer_locator = Locators.faq_answer_panel(index)
 
-        self.click(question_button)
-        # Ждем, пока ответ станет видимым
-        self.wait.until(EC.visibility_of_element_located(answer_panel))
-        return self.find_element(answer_panel).text
+        self.scroll_to_element(question_locator)
+        self.wait_and_click(question_locator)
+        return self.get_text_of_element(answer_locator)
 
+    @allure.step("Раскрыть вопрос в разделе FAQ 'Вопросы о важном'")
+    def click_faq_question(self, index):
+        question_locator = Locators.faq_question_button(index)
+        self.scroll_to_element(question_locator)
+        self.wait_and_click(question_locator)
+
+    @allure.step("Получить текст ответа на вопрос в разделе FAQ")
+    def get_faq_answer_text(self, index):
+        answer_locator = Locators.faq_answer_panel(index)
+        return self.get_text_of_element(answer_locator)
+
+
+
+
+
+    
+
+    @allure.step("Кликнуть по логотипу Самоката")
     def click_scooter_logo(self):
-        self.click((By.XPATH, "//img[@alt='Scooter']"))
+        self.click_on_element(Locators.SCOOTER_LOGO)
 
+    @allure.step("Кликнуть по логотипу Яндекса")
     def click_yandex_logo(self):
-        self.click((By.XPATH, "//img[@alt='Yandex']"))
+        self.click_on_element(Locators.YANDEX_LOGO)
