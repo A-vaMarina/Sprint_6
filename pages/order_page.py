@@ -1,65 +1,40 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+import allure
 from pages.base_page import BasePage
+from locators.order_page_locators import OrderPageLocators as Locators
+
 
 class OrderPage(BasePage):
-    # Первая страница заказа
-    NAME_INPUT = (By.XPATH, "//input[@placeholder='* Имя']")
-    SURNAME_INPUT = (By.XPATH, "//input[@placeholder='* Фамилия']")
-    ADDRESS_INPUT = (By.XPATH, "//input[@placeholder='* Адрес: куда привезти заказ']")
-    METRO_SELECT = (By.XPATH, "//input[@placeholder='* Станция метро']")
-    METRO_OPTION = (By.XPATH, "//div[@class='select-search__select']//li[contains(text(), '{station}')]")
-    PHONE_INPUT = (By.XPATH, "//input[@placeholder='* Телефон: на него позвонит курьер']")
-    NEXT_BUTTON = (By.XPATH, "//button[text()='Далее']")
 
-    # Вторая страница заказа
-    DATE_INPUT = (By.XPATH, "//input[@placeholder='* Когда привезти самокат']")
-    DATE_OPTION = (By.XPATH, "//div[@class='react-datepicker__day--{day}']")
-    RENTAL_PERIOD = (By.XPATH, "//div[@class='Dropdown-control']")
-    RENTAL_PERIOD_OPTION = (By.XPATH, "//div[@class='Dropdown-menu']//div[text()='{period}']")
-    COLOR_CHECKBOX = (By.ID, "{color}")
-    COMMENT_INPUT = (By.XPATH, "//input[@placeholder='Комментарий для курьера']")
-    ORDER_BUTTON = (By.XPATH, "//button[@class='Button_Button__ra12g Button_Middle__1CSJM' and text()='Заказать']")
-    CONFIRM_BUTTON = (By.XPATH, "//button[text()='Да']")
-    SUCCESS_MESSAGE = (By.XPATH, "//div[contains(@class,'Order_ModalHeader') and text()='Заказ оформлен']")
+    @allure.step("Заполнить первую форму заказа")
+    def fill_first_form(self, data):
+        self.wait_for_element_visible(Locators.NAME_INPUT)
+        self.send_keys_to_element(Locators.NAME_INPUT, data['name'])
+        self.send_keys_to_element(Locators.SURNAME_INPUT, data['surname'])
+        self.send_keys_to_element(Locators.ADDRESS_INPUT, data['address'])
+        self.send_keys_to_element(Locators.METRO_SELECT, data['metro'])
+        self.wait_and_click(Locators.metro_option(data['station']))
+        self.send_keys_to_element(Locators.PHONE_INPUT, data['phone'])
+        self.wait_and_click(Locators.NEXT_BUTTON)
 
-    def __init__(self, driver):
-        super().__init__(driver)
+    @allure.step("Проверить появление второй формы")
+    def is_second_form_opened(self):
+        return self.wait_for_element_visible(Locators.RENT_HEADER).is_displayed()
 
-    def fill_first_form(self, name, surname, address, metro_station, phone):
-        self.send_keys(self.NAME_INPUT, name)
-        self.send_keys(self.SURNAME_INPUT, surname)
-        self.send_keys(self.ADDRESS_INPUT, address)
+    @allure.step("Заполнить вторую форму заказа")
+    def fill_second_form(self, data):
+        self.send_keys_to_element(Locators.DATE_INPUT, data['date'])
+        self.wait_and_click(Locators.RENTAL_PERIOD_DROPDOWN)
+        self.wait_and_click(Locators.rental_period_option(data['rental_period']))
+        self.wait_and_click(Locators.color_checkbox(data['color']))
+        if data['comment']:
+            self.send_keys_to_element(Locators.COMMENT_INPUT, data['comment'])
+        self.wait_and_click(Locators.ORDER_BUTTON)
 
-        self.click(self.METRO_SELECT)
-        metro_locator = (By.XPATH, f"//div[@class='select-search__select']//li[contains(text(), '{metro_station}')]")
-        self.click(metro_locator)
+    @allure.step("Подтвердить заказ") 
+    def confirm_order(self):
+        self.wait_for_element_visible(Locators.CONFIRM_MODAL)
+        self.wait_and_click(Locators.CONFIRM_YES_BUTTON)
 
-        self.send_keys(self.PHONE_INPUT, phone)
-        self.click(self.NEXT_BUTTON)
-
-    def fill_second_form(self, date, rental_period, color, comment=None):
-        # Дата
-        self.click(self.DATE_INPUT)
-        date_locator = (By.XPATH, f"//div[@class='react-datepicker__day--{date}']")
-        self.click(date_locator)
-
-        # Период аренды
-        self.click(self.RENTAL_PERIOD)
-        period_locator = (By.XPATH, f"//div[@class='Dropdown-menu']//div[text()='{rental_period}']")
-        self.click(period_locator)
-
-        # Цвет
-        color_locator = (By.ID, color)
-        self.click(color_locator)
-
-        # Комментарий (опционально)
-        if comment:
-            self.send_keys(self.COMMENT_INPUT, comment)
-
-        self.click(self.ORDER_BUTTON)
-        self.click(self.CONFIRM_BUTTON)
-
+    @allure.step("Получить текст сообщения об успешном заказе")
     def get_success_message(self):
-        return self.find_element(self.SUCCESS_MESSAGE).text
+        return self.get_text_of_element(Locators.SUCCESS_MESSAGE)

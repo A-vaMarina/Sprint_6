@@ -11,14 +11,14 @@ class OrderPageLocators:
     NEXT_BUTTON = (By.XPATH, "//button[text()='Далее']")
 
     # Вторая страница формы заказа
+    RENT_HEADER = (By.XPATH, "//div[text()='Про аренду']")
     DATE_INPUT = (By.XPATH, "//input[@placeholder='* Когда привезти самокат']")
     RENTAL_PERIOD_DROPDOWN = (By.CLASS_NAME, 'Dropdown-placeholder')
-    BLACK_CHECKBOX = (By.ID, 'black')
-    GRAY_CHECKBOX = (By.ID, 'grey')
     COMMENT_INPUT = (By.XPATH, "//input[@placeholder='Комментарий для курьера']")
     ORDER_BUTTON = (By.XPATH, "//button[@class='Button_Button__ra12g Button_Middle__1CSJM' and text()='Заказать']",)
-    CONFIRM_MODAL = (By.CLASS_NAME, 'Order_Modal__YZ-d3')
+
     CONFIRM_YES_BUTTON = (By.XPATH, "//button[text()='Да']")
+    CONFIRM_MODAL = (By.CLASS_NAME, 'Order_Modal__YZ-d3') # Окно "Заказ оформлен"
     SUCCESS_MESSAGE = (By.XPATH, "//div[contains(@class, 'Order_ModalHeader') and contains(text(), 'Заказ оформлен')]",)
 
     @staticmethod
@@ -28,3 +28,7 @@ class OrderPageLocators:
     @staticmethod
     def rental_period_option(period):
         return (By.XPATH, f"//div[@class='Dropdown-option' and text()='{period}']")
+
+    @staticmethod
+    def color_checkbox(color):
+        return (By.ID, color)
