@@ -12,7 +12,7 @@ class OrderPage(BasePage):
         self.send_keys_to_element(Locators.SURNAME_INPUT, data['surname'])
         self.send_keys_to_element(Locators.ADDRESS_INPUT, data['address'])
         self.send_keys_to_element(Locators.METRO_SELECT, data['metro'])
-        self.wait_and_click(Locators.metro_option(data['station']))
+        self.wait_and_click(Locators.metro_option(data['metro']))
         self.send_keys_to_element(Locators.PHONE_INPUT, data['phone'])
         self.wait_and_click(Locators.NEXT_BUTTON)
 
@@ -23,6 +23,7 @@ class OrderPage(BasePage):
     @allure.step("Заполнить вторую форму заказа")
     def fill_second_form(self, data):
         self.send_keys_to_element(Locators.DATE_INPUT, data['date'])
+        self.click_on_element(Locators.RENT_HEADER)
         self.wait_and_click(Locators.RENTAL_PERIOD_DROPDOWN)
         self.wait_and_click(Locators.rental_period_option(data['rental_period']))
         self.wait_and_click(Locators.color_checkbox(data['color']))
