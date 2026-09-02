@@ -7,7 +7,7 @@ class Urls:
     DZEN_HOST = "dzen.ru"  # хост страницы Дзен
 
 
-class TestData:
+class UserData:
 
     _today = datetime.now() # текущая дата
 
