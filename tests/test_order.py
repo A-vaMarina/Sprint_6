@@ -7,7 +7,7 @@ from data import UserData
 
 
 @allure.epic('Яндекс.Самокат')
-@allure.feature('Заказ самоката')
+@allure.feature('Оформление заказа')
 class TestOrder:
     @allure.title('Проверка флоу позитивного сценария через две точки входа')
     @allure.description("Успешное оформление заказа через кнопку «Заказать» вверху и внизу страницы. Используется два набора тестовых данных.")
@@ -16,18 +16,24 @@ class TestOrder:
         main_page = MainPage(driver)
         order_page = OrderPage(driver)
 
-        main_page.accept_cookies_if_present()
+        with allure.step("Принять куки"):
+            main_page.accept_cookies_if_present()
 
-        if entry_point == "top":
-            main_page.click_order_button_top()
-        else:
-            main_page.click_order_button_bottom()
-    
-        order_page.fill_first_form(user_data)
-        order_page.is_second_form_opened()
-        order_page.fill_second_form(user_data)
-        order_page.confirm_order()
+        with allure.step("Нажать на кнопку Заказать"):
+            if entry_point == "top":
+                main_page.click_order_button_top()
+            else:
+                main_page.click_order_button_bottom()
+
+        with allure.step("Заполнить форму заказа"):
+            order_page.fill_first_form(user_data)
+            order_page.is_second_form_opened()
+            order_page.fill_second_form(user_data)
+
+        with allure.step("Отправить форму заказа"):
+            order_page.confirm_order()
         
-        assert "Заказ оформлен" in order_page.get_success_message()
+        with allure.step("Проверить, что появилось окно с сообщением об успешном заказе"):
+            assert "Заказ оформлен" in order_page.get_success_message()
         
 

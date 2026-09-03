@@ -43,12 +43,6 @@ class MainPage(BasePage):
         answer_locator = Locators.faq_answer_panel(index)
         return self.get_text_of_element(answer_locator)
 
-
-
-
-
-    
-
     @allure.step("Кликнуть по логотипу Самоката")
     def click_scooter_logo(self):
         self.click_on_element(Locators.SCOOTER_LOGO)

@@ -8,11 +8,11 @@ class BasePage:
         self.driver = driver
 
     @allure.step("Подождать видимости элемента {locator}")
-    def wait_for_element_visible(self, locator, timeout=10):
+    def wait_for_element_visible(self, locator, timeout=5):
         return WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
     @allure.step("Подождать, пока элемент {locator} станет кликабельным")
-    def wait_for_element_clickable(self, locator, timeout=10):
+    def wait_for_element_clickable(self, locator, timeout=5):
         return WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
 
     @allure.step("Кликнуть по элементу {locator}")
