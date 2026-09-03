@@ -32,16 +32,11 @@ class MainPage(BasePage):
         self.wait_and_click(question_locator)
         return self.get_text_of_element(answer_locator)
 
-    @allure.step("Раскрыть вопрос в разделе FAQ 'Вопросы о важном'")
+    @allure.step("Раскрыть вопрос в разделе FAQ")
     def click_faq_question(self, index):
         question_locator = Locators.faq_question_button(index)
         self.scroll_to_element(question_locator)
         self.wait_and_click(question_locator)
-
-    @allure.step("Получить текст ответа на вопрос в разделе FAQ")
-    def get_faq_answer_text(self, index):
-        answer_locator = Locators.faq_answer_panel(index)
-        return self.get_text_of_element(answer_locator)
 
     @allure.step("Кликнуть по логотипу Самоката")
     def click_scooter_logo(self):
