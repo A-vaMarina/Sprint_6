@@ -4,6 +4,7 @@ venv/
 env/
 
 # Артефакты тестирования
+allure_results/
 allure-results/
 reports/
 logs/
