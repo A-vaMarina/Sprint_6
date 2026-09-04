@@ -20,11 +20,8 @@ class TestOrder:
         with allure.step("Принять куки"):
             main_page.accept_cookies_if_present()
 
-        with allure.step("Нажать на кнопку Заказать"):
-            if entry_point == "top":
-                main_page.click_order_button_top()
-            else:
-                main_page.click_order_button_bottom()
+        with allure.step("Нажать на кнопку 'Заказать'"):
+            main_page.click_order_button(entry_point)
 
         with allure.step("Заполнить форму заказа"):
             order_page.fill_first_form(user_data)
@@ -36,5 +33,3 @@ class TestOrder:
         
         with allure.step("Проверить, что появилось окно с сообщением об успешном заказе"):
             assert "Заказ оформлен" in order_page.get_success_message()
-        
-

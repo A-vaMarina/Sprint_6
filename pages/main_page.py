@@ -24,6 +24,15 @@ class MainPage(BasePage):
         self.scroll_to_element(Locators.ORDER_BUTTON_BOTTOM)
         self.wait_and_click(Locators.ORDER_BUTTON_BOTTOM)
 
+    @allure.step('Нажать {position} - кнопку "Заказать"')
+    def click_order_button(self, position='top'):
+        if position == 'top':
+            self.click_order_button_top()
+        elif position == 'bottom':
+            self.click_order_button_bottom()
+        else:
+            raise ValueError(f'Неизвестная точка входа {position}')
+
     @allure.step("Раскрыть вопрос FAQ и получить текст ответа")
     def get_faq_answer_text(self, index):
         question_locator = Locators.faq_question_button(index)

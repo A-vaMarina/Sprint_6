@@ -103,21 +103,14 @@ pytest --headless
 1. Прогоните тесты со сбором результатов Allure:
 
    ```bash
-   pytest --alluredir=allure-results
+   pytest --alluredir=allure_results
    ```
 
 2. Сгенерируйте и откройте HTML-отчёт (требуется установленный
    [Allure Commandline](https://allurereport.org/docs/gettingstarted-installation/)):
 
    ```bash
-   allure serve allure-results
-   ```
-
-   либо, чтобы сохранить статический отчёт на диск:
-
-   ```bash
-   allure generate allure-results -o allure-report --clean
-   allure open allure-report
+   allure serve allure_results
    ```
 
 Отчёт содержит группировку тестов по epic/feature/story и шаги выполнения
