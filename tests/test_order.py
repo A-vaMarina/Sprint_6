@@ -9,8 +9,9 @@ from data import UserData
 @allure.epic('Яндекс.Самокат')
 @allure.feature('Оформление заказа')
 class TestOrder:
-    @allure.title('Проверка флоу позитивного сценария через две точки входа')
-    @allure.description("Успешное оформление заказа через кнопку «Заказать» вверху и внизу страницы. Используется два набора тестовых данных.")
+
+    @allure.title("Успешное оформление заказа через {entry_point} - кнопку 'Заказать'")
+    @allure.description('Проверка флоу позитивного сценария для двух точек входа и с двумя наборами данных.')
     @pytest.mark.parametrize('entry_point, user_data', [('top', UserData.USER_1), ('bottom', UserData.USER_2)])
     def test_successful_order(self, driver, entry_point, user_data):
         main_page = MainPage(driver)

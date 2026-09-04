@@ -6,8 +6,8 @@ class Urls:
     BASE_URL = "https://qa-scooter.praktikum-services.ru/"  # главная страница Яндекс Самокат
     DZEN_HOST = "dzen.ru"  # хост страницы Дзен
 
-
 class UserData:
+
 
     _today = datetime.now() # текущая дата
 
