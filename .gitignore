@@ -42,7 +42,6 @@ htmlcov/
 *.cover
 
 # Allure
-allure_results/
 allure-results/
 allure-report/
 allure-reports/
