@@ -1,23 +1,64 @@
-# Виртуальные окружения
+# ========== Python ==========
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.dll
+*.dylib
+*.egg-info/
+*.egg
+dist/
+build/
+*.whl
+*.log
+
+# ========== Виртуальные окружения ==========
 venv/
 .venv/
 env/
+ENV/
+.env/
 
-# Артефакты тестирования
+# ========== IDE ==========
+# PyCharm
+.idea/
+*.iml
+.idea_modules/
+*.iws
+*.ipr
+out/
+
+# VS Code
+.vscode/
+*.code-workspace
+*.code-search
+
+# ========== Тестирование и отчеты ==========
+.pytest_cache/
+.tox/
+.coverage
+htmlcov/
+*.cover
+
+# Allure
 allure-results/
+allure-report/
+allure-reports/
+
 reports/
 logs/
-*.log
+test-results/
 
-# IDE
-.idea/
-.vscode/
+# ========== OS ==========
 .DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
 
-# Секреты
+# ========== Секреты ==========
 .env
-
-# Кэш и байт-код
-__pycache__/
-*.pyc
-.pytest_cache/
+.env.local
+.env.*.local
+*.pem
+*.key
